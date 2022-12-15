@@ -6,8 +6,23 @@ use App\Models\Role;
 use App\Models\Permission;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
-trait HasPermissionsTrait
+trait HasPermissionTrait
 {
+    /**
+     * Verifies if a User belongs to any of the provided roles
+     *
+     * @return Boolean
+     */
+    public function hasRoles(...$roles)
+    {
+        foreach($roles as $role) {
+            if ($this->roles->contains('name', $role)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     /**
      * The permissions that belong to the HasPermissionTrait
      *
