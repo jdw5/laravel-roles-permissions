@@ -63,13 +63,10 @@ class URPSeeder extends Seeder
 
         DB::table('users_roles')->insert([
             'user_id' => 1,
-            'role_id' => 1, 
+            'role_id' => 3, 
         ]);
 
-        DB::table('users_permissions')->insert([
-            'user_id' => 1,
-            'permission_id' => 1, 
-        ]);
+        
         DB::table('users_permissions')->insert([
             'user_id' => 1,
             'permission_id' => 5, 
