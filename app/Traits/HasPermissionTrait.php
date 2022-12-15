@@ -13,6 +13,32 @@ trait HasPermissionTrait
      *
      * @return Boolean
      */
+    public function hasPermissionTo($permission)
+    {
+        return $this->hasPermissionViaRole($permission) || $this->hasPermission($permission);
+    }
+
+    protected function hasPermission($permission)
+    {
+        return (bool) $this->permissions->where('name', $permission->name)->count();
+    }
+
+    public function hasPermissionViaRole($permission)
+    {
+        foreach ($permission->roles as $role) {
+            if ($this->roles->contains($role)) {
+                return true;
+            }
+        }
+        return false;
+
+    }
+
+    /**
+     * Verifies if a User belongs to any of the provided roles
+     *
+     * @return Boolean
+     */
     public function hasRoles(...$roles)
     {
         foreach($roles as $role) {
@@ -20,6 +46,7 @@ trait HasPermissionTrait
                 return true;
             }
         }
+
         return false;
     }
 

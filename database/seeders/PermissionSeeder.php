@@ -34,5 +34,10 @@ class PermissionSeeder extends Seeder
             "id" => 4,
             "name" => "manage_community"
         ]);
+
+        DB::table('permissions')->insert([
+            "id" => 5,
+            "name" => "special"
+        ]);
     }
 }

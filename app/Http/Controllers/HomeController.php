@@ -10,7 +10,7 @@ class HomeController extends Controller
     public function __invoke() {
         $user = auth()->user();
 
-        dump($user->hasRoles('user'));
+        dump($user->can('edit_posts'));
         return Inertia::render('Dashboard', [
             //
         ]);
