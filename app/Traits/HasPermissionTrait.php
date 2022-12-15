@@ -4,6 +4,7 @@ namespace App\Traits;
 
 use App\Models\Role;
 use App\Models\Permission;
+use Illuminate\Support\Arr;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 trait HasPermissionTrait
@@ -32,6 +33,38 @@ trait HasPermissionTrait
         }
         return false;
 
+    }
+
+    public function givePermissionTo(...$permissions)
+    {  
+        $permissions = $this->getPermissions(Arr::flatten($permissions));
+
+        if ($permissions === null) {
+            return $this;
+        }
+
+        $this->permissions()->saveMany($permissions);
+        return $this;
+    }
+
+    public function removePermissionTo(...$permissions)
+    {  
+        $permissions = $this->getPermissions(Arr::flatten($permissions));
+
+
+        $this->permissions()->detach($permissions);
+        return $this;
+    }
+
+    public function refreshPermission(...$permissions)
+    {  
+        $this->permissions()->detach();
+        return $this->givePermissionTo($permissions);
+    }
+
+
+    public function getPermissions(array $permissions) {
+        return Permission::whereIn('name', $permissions)->get();
     }
 
     /**
